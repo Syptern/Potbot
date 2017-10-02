@@ -51,10 +51,19 @@ client.on("message", (message) => {
     //uit de pot
     if (message.content === 'geen pot') {
         potmensen = potmensen.filter(mens => mens !== message.author);
-        message.channel.send(message.author + ` is niet meer hyped voor pot ${emoji('vato')} ..... ` + potmensen.join(' + ') + ' zijn nog wel hyped');
-        console.log(potmensen);
+        
+        if (potmensen.length === 0) {
+            message.channel.send('niemand is meer hyped voor een pot')};
+        
+        if (potmensen.length === 1) {
+            message.channel.send(message.author + ` is niet meer hyped voor pot ${emoji('vato')} ..... ` + potmensen.join(' + ') + ' is in zijn eentje nog wel hyped');
+        if (potmensen.length >= 2) {
+             message.channel.send(message.author + ` is niet meer hyped voor pot ${emoji('vato')} ..... ` + potmensen.join(' + ') + ' zijn nog wel hyped');
+        }
     }
-});
+}});
+    
+
 
 
 const token = process.argv[2] || "MzY0MTc3NTk5Mzg5MjM3MjQ4.DLL_OA.Wbs-oPaHHS6T3gyfa4K-R9AKpkE";
