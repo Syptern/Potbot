@@ -1,0 +1,14 @@
+{
+  "name": "potbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Potbot.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.2.1"
+  }
+}
