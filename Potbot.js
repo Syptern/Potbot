@@ -4,7 +4,7 @@ const client = new Discord.Client();
 
 const auth = require("./auth.json");
 
-var potmensen = [];
+let potmensen = [];
 
 client.on("ready", () => {
     console.log("de potbot is aan het lopen");
