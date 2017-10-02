@@ -48,11 +48,10 @@ client.on("message", (message) => {
     
     //uit de pot
     if (message.content === 'geen pot') {
-        potmensen.pop(message.author);
+        potmensen = potmensen.filter(mens => mens !== message.author);
         message.channel.send(message.author + " is niet meer hyped voor pot :vato: ..... " + potmensen.join(' + ') + ' zijn nog wel hyped');
         console.log(potmensen);
     }
-    
 });
 
 
