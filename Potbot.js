@@ -10,6 +10,23 @@ client.on("ready", () => {
     console.log("de potbot is aan het lopen");
 });
 
+const status_order = [
+  'online',
+  'idle',
+  'dnd',
+  'offline',
+];
+const status_rank = (status) => status_order.indexOf(status);
+
+client.on("presenceUpdate", (oldMember, newMember) => {
+  const old_status = oldMember.presence.status;
+  const new_status = newMember.presence.status;
+
+  if (status_rank(old_status) < status_rank(new_status)) {
+    // Person got "more offline" (online -> idle, or idle -> offline)
+  }
+});
+
 client.on("message", (message) => {
     const emoji = (name) => {
       return message.guild.emojis.find("name", name);
