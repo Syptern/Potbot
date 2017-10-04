@@ -14,6 +14,8 @@ var ethprijs;
 
 var ethprijsstring;
 
+var meta;
+
 function requestBTC() {
     request.get('https://api.bitfinex.com/v1/pubticker/BTCUSD', function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -45,7 +47,9 @@ client.on("message", (message) => {
     if(message.content === 'hoeveel is 1 btc waard?') {
        message.channel.send(btcprijs.mid + ' usd');
     }
-
+    if (message.content === 'wat is de meta?') {
+        message.channel.send('StickFightTheGame');
+    }
     //in de pot
     if (message.content === 'pot') {
         if (potmensen.includes(message.author) === false) {
