@@ -10,12 +10,24 @@ var potmensen = [];
 
 var btcprijs;
 
+var ethprijs;
+
+var ethprijsstring;
+
 function requestBTC() {
     request.get('https://api.bitfinex.com/v1/pubticker/BTCUSD', function (error, response, body) {
     if (!error && response.statusCode == 200) {
         btcprijs = JSON.parse(body);
         btcprijsstring = JSON.stringify(btcprijs.mid);
-        client.user.setGame(btcprijsstring);
+        client.user.setGame(btcprijsstring + ' - ' + ethprijsstring);
+    }
+})}
+
+function requestETH() {
+    request.get('https://api.bitfinex.com/v1/pubticker/ETHUSD', function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        ethprijs = JSON.parse(body);
+        ethprijsstring = JSON.stringify(ethprijs.mid);
     }
 })}
 
@@ -92,7 +104,7 @@ client.on("presenceUpdate", (oldMember, newMember) => {
         console.log('status verandering' + oldMember + potmensen[0]);
         const generalchannel = client.channels.get("364004159847923714")
         generalchannel.send(newMember + ' is van online naar idle of offline gegaan en uit de pot gehaald');
-        potmensen = potmensen.filter(mens => mens !== oldMember.username);
+        potmensen = potmensen.filter(mens => mens.username !== oldMember.username);
        
     }
 }
@@ -102,6 +114,7 @@ client.on("presenceUpdate", (oldMember, newMember) => {
 );
 
 setInterval(requestBTC, 5000);
+setInterval(requestETH, 5000);
 
 const token = process.argv[2] || "MzY0MTc3NTk5Mzg5MjM3MjQ4.DLL_OA.Wbs-oPaHHS6T3gyfa4K-R9AKpkE";
 client.login(token);
