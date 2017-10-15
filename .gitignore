@@ -58,3 +58,6 @@ typings/
 .env
 
 config.js
+
+# ignore your own authentication key #privacy
+auth.json
