@@ -1,19 +1,12 @@
 const request = require('request');
-
 const Discord = require("discord.js");
-
 const client = new Discord.Client();
-
 const auth = require("./auth.json");
 
 var potmensen = [];
-
 var btcprijs;
-
 var ethprijs;
-
 var ethprijsstring;
-
 var meta;
 
 function requestBTC() {
@@ -38,15 +31,14 @@ client.on("ready", () => {
 });
 
 client.on("message", (message) => {
-    const emoji = (name) => {
-      return message.guild.emojis.find("name", name);
-    }
+    const emoji = (name) => message.guild.emojis.find("name", name);
 
-    if(message.author.bot) return;
-    
-    if(message.content === 'hoeveel is 1 btc waard?') {
+    if (message.author.bot) return;
+
+    if (message.content === 'hoeveel is 1 btc waard?') {
        message.channel.send(btcprijs.mid + ' usd');
     }
+
     if (message.content === 'wat is de meta?') {
         message.channel.send('StickFightTheGame');
     }
@@ -58,36 +50,32 @@ client.on("message", (message) => {
         console.log("ik hoor pot " + message.author);
 
         //als er al in zit
-
-        if (potmensen.length === 1) {
-        message.channel.send(`ik hoor pot!! ${potmensen[0]} is in voor een pot, maar de hype is matig ${emoji('feelsBadMan')}`);
+        switch (potmensen.length) {
+          case 1:
+            message.channel.send(`ik hoor pot!! ${potmensen[0]} is in voor een pot, maar de hype is matig ${emoji('feelsBadMan')}`);
+            break;
+          case 2:
+            message.channel.send(potmensen.join(' + ') + ` zijn in voor een pot, hmmm miss rl?? ${emoji('intouchables')}`);
+            break;
+          case 3:
+            message.channel.send(potmensen.join(' + ') + " zijn in voor een pot, altijd gezellig met zn drieen <3 ");
+            break;
+          case 4:
+            message.channel.send(potmensen.join(' + ') + ` zijn in voor een pot, 2v2 rl??? nog 1tje hosselen voor de 5man cs?? zoveel opties ${emoji('kappaPride')}`);
+            break;
+          case (potmensen.length >= 5):
+            message.channel.send(potmensen.join(' + ') + ` dit wordt een feeeestjeeeee ${emoji('klok')} ${emoji('klok')}`);
+            break;
         }
-
-        if (potmensen.length === 2) {
-        message.channel.send(potmensen.join(' + ') + ` zijn in voor een pot, hmmm miss rl?? ${emoji('intouchables')}`);
-        }
-
-        if (potmensen.length === 3) {
-        message.channel.send(potmensen.join(' + ') + " zijn in voor een pot, altijd gezellig met zn drieen <3 ");
-        }
-
-        if (potmensen.length === 4) {
-        message.channel.send(potmensen.join(' + ') + ` zijn in voor een pot, 2v2 rl??? nog 1tje hosselen voor de 5man cs?? zoveel opties ${emoji('kappaPride')}`);
-        }
-
-        if (potmensen.length >= 5) {
-        message.channel.send(potmensen.join(' + ') + ` dit wordt een feeeestjeeeee ${emoji('klok')} ${emoji('klok')}`);
-        }
-
     }
 
     //uit de pot
     if (message.content === 'geen pot') {
         potmensen = potmensen.filter(mens => mens !== message.author);
-        
+
         if (potmensen.length === 0) {
             message.channel.send('niemand is meer hyped voor een pot')};
-        
+
         if (potmensen.length === 1) {
             message.channel.send(message.author + ` is niet meer hyped voor pot ${emoji('vato')} ..... ` + potmensen.join(' + ') + ' is in zijn eentje nog wel hyped');
         if (potmensen.length >= 2) {
@@ -100,7 +88,7 @@ client.on("message", (message) => {
         message.channel.send('Mensen die in zijn voor een pot: ' + potmensen.join(' + '));
     }
 });
-    
+
 
 client.on("presenceUpdate", (oldMember, newMember) => {
     console.log(potmensen[0]);
@@ -109,13 +97,8 @@ client.on("presenceUpdate", (oldMember, newMember) => {
         const generalchannel = client.channels.get("364004159847923714")
         generalchannel.send(newMember + ' is van online naar idle of offline gegaan en uit de pot gehaald');
         potmensen = potmensen.filter(mens => mens.username !== oldMember.username);
-       
     }
-}
-      
-      
-    
-);
+});
 
 setInterval(requestBTC, 5000);
 setInterval(requestETH, 5000);
