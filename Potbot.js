@@ -44,7 +44,7 @@ client.on("message", (message) => {
     if(message.author.bot) return;
 
     if(message.content === 'hoeveel is 1 btc waard?') {
-       message.channel.send(btcprijs.mid + ' usd');
+       message.channel.send(btcprijs + ' usd');
     }
     if (message.content === 'wat is de meta?') {
         message.channel.send('StickFightTheGame');
