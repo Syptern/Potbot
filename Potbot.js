@@ -14,12 +14,12 @@ var ethprijs;
 
 var meta;
 
-const update_prices = () => client.user.setGame(btcprijs + ' - ' + ethprijs);
+const update_prices = () => client.user.setGame(btcprijs + ' - ' + ethprijs)
 
 function requestBTC() {
     request.get('https://api.bitfinex.com/v1/pubticker/BTCUSD', (error, response, body) => {
     if (!error && response.statusCode == 200) {
-        nieuwe_btcprijs = JSON.stringify(JSON.parse(body).mid);
+        let nieuwe_btcprijs = JSON.stringify(JSON.parse(body).mid);
         btcprijs = nieuwe_btcprijs
     }
 })}
@@ -27,7 +27,7 @@ function requestBTC() {
 function requestETH() {
     request.get('https://api.bitfinex.com/v1/pubticker/ETHUSD', (error, response, body) => {
     if (!error && response.statusCode == 200) {
-        nieuwe_ethprijs = JSON.stringify(JSON.parse(body).mid);
+        let nieuwe_ethprijs = JSON.stringify(JSON.parse(body).mid);
         ethprijs = nieuwe_ethprijs
     }
 })}
@@ -117,5 +117,5 @@ setInterval(() => {
   if (btcprijs && ethprijs) update_prices();
 }, 5000);
 
-const token = process.argv[2] || "MzY0MTc3NTk5Mzg5MjM3MjQ4.DLL_OA.Wbs-oPaHHS6T3gyfa4K-R9AKpkE";
+const token = process.argv[2] || auth.token;
 client.login(token);
