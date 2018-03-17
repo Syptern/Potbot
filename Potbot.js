@@ -12,24 +12,23 @@ var btcprijs;
 
 var ethprijs;
 
-var ethprijsstring;
-
 var meta;
 
+const update_prices = () => client.user.setGame(btcprijs + ' - ' + ethprijs)
+
 function requestBTC() {
-    request.get('https://api.bitfinex.com/v1/pubticker/BTCUSD', function (error, response, body) {
+    request.get('https://api.bitfinex.com/v1/pubticker/BTCUSD', (error, response, body) => {
     if (!error && response.statusCode == 200) {
-        btcprijs = JSON.parse(body);
-        btcprijsstring = JSON.stringify(btcprijs.mid);
-        client.user.setGame(btcprijsstring + ' - ' + ethprijsstring);
+        let nieuwe_btcprijs = JSON.stringify(JSON.parse(body).mid);
+        btcprijs = nieuwe_btcprijs
     }
 })}
 
 function requestETH() {
-    request.get('https://api.bitfinex.com/v1/pubticker/ETHUSD', function (error, response, body) {
+    request.get('https://api.bitfinex.com/v1/pubticker/ETHUSD', (error, response, body) => {
     if (!error && response.statusCode == 200) {
-        ethprijs = JSON.parse(body);
-        ethprijsstring = JSON.stringify(ethprijs.mid);
+        let nieuwe_ethprijs = JSON.stringify(JSON.parse(body).mid);
+        ethprijs = nieuwe_ethprijs
     }
 })}
 
@@ -43,9 +42,9 @@ client.on("message", (message) => {
     }
 
     if(message.author.bot) return;
-    
+
     if(message.content === 'hoeveel is 1 btc waard?') {
-       message.channel.send(btcprijs.mid + ' usd');
+       message.channel.send(btcprijs + ' usd');
     }
     if (message.content === 'wat is de meta?') {
         message.channel.send('StickFightTheGame');
@@ -84,10 +83,10 @@ client.on("message", (message) => {
     //uit de pot
     if (message.content === 'geen pot') {
         potmensen = potmensen.filter(mens => mens !== message.author);
-        
+
         if (potmensen.length === 0) {
             message.channel.send('niemand is meer hyped voor een pot')};
-        
+
         if (potmensen.length === 1) {
             message.channel.send(message.author + ` is niet meer hyped voor pot ${emoji('vato')} ..... ` + potmensen.join(' + ') + ' is in zijn eentje nog wel hyped');
         if (potmensen.length >= 2) {
@@ -100,7 +99,7 @@ client.on("message", (message) => {
         message.channel.send('Mensen die in zijn voor een pot: ' + potmensen.join(' + '));
     }
 });
-    
+
 
 client.on("presenceUpdate", (oldMember, newMember) => {
     console.log(potmensen[0]);
@@ -109,16 +108,14 @@ client.on("presenceUpdate", (oldMember, newMember) => {
         const generalchannel = client.channels.get("364004159847923714")
         generalchannel.send(newMember + ' is van online naar idle of offline gegaan en uit de pot gehaald');
         potmensen = potmensen.filter(mens => mens.username !== oldMember.username);
-       
     }
-}
-      
-      
-    
-);
+});
 
-setInterval(requestBTC, 5000);
-setInterval(requestETH, 5000);
+setInterval(() => {
+  requestBTC();
+  requestETH();
+  if (btcprijs && ethprijs) update_prices();
+}, 5000);
 
-const token = process.argv[2] || "MzY0MTc3NTk5Mzg5MjM3MjQ4.DLL_OA.Wbs-oPaHHS6T3gyfa4K-R9AKpkE";
+const token = process.argv[2] || auth.token;
 client.login(token);
