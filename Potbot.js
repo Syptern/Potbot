@@ -6,7 +6,7 @@ const client = new Discord.Client();
 
 const auth = require("./auth.json");
 
-var potmensen = [];
+let potmensen = [];
 
 var btcprijs;
 
